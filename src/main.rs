@@ -1,9 +1,13 @@
 use std::io;
 
-fn walk(path: &str) -> io::Result<()> {
-    for entry in std::fs::read_dir(path)? {
-        let file = entry?;
-        println!("{:?}", file.path());
+fn walk(start_path: &str) -> io::Result<()> {
+    for entry in std::fs::read_dir(start_path)? {
+        let path = entry?.path();
+        if path.is_dir() {
+            println!("directory {:?}", path);
+        } else {
+            println!("file {:?}", path);
+        }
     }
     Ok(())
 }
