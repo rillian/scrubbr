@@ -1,7 +1,10 @@
 [package]
 name = "scrubbr"
 version = "0.1.0"
-authors = ["giles <giles@thaumas.net>"]
+authors = ["Ralph Giles <giles@thaumas.net>"]
 edition = "2018"
+
+description = "Walks directories verifying the contents against any checksum files it finds."
+license = "GPL-3.0-only"
 
 [dependencies]
