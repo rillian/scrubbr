@@ -10,7 +10,7 @@ fn walk(start_path: &str) -> io::Result<()> {
             }
         }
         if path.is_dir() {
-            println!("directory {:?}", path);
+            println!(" dir {:?}", path);
         } else {
             println!("file {:?}", path);
         }
