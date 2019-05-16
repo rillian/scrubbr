@@ -1,6 +1,7 @@
 use std::io;
+use std::path::Path;
 
-fn walk(start_path: &str) -> io::Result<()> {
+fn walk(start_path: &Path) -> io::Result<()> {
     for entry in std::fs::read_dir(start_path)? {
         let path = entry?.path();
         if let Some(name) = path.file_name().and_then(|x| x.to_str()) {
@@ -11,6 +12,7 @@ fn walk(start_path: &str) -> io::Result<()> {
         }
         if path.is_dir() {
             println!(" dir {:?}", path);
+            walk(&path)?;
         } else {
             println!("file {:?}", path);
         }
@@ -20,5 +22,6 @@ fn walk(start_path: &str) -> io::Result<()> {
 
 fn main() {
     println!("Hello, world! Let's see what we have...");
-    walk(".").expect("Failed to walk directory");
+    let dirname = Path::new(".");
+    walk(dirname).expect("Failed to walk directory");
 }
