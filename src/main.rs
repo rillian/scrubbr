@@ -31,7 +31,16 @@ fn validate(checksum_path: &Path) -> io::Result<()> {
     let file = std::fs::File::open(checksum_path)?;
     let file = std::io::BufReader::new(file);
     for line in file.lines() {
-        println!("  {}", line?);
+        if let Ok(line) = line {
+            let line = line.trim();
+            if let Some(offset) = line.find(char::is_whitespace) {
+                let (checksum, filename) = line.split_at(offset);
+                let filename = filename.trim();
+                println!("  {}  {}", checksum, filename);
+            } else {
+                println!("i {}", line);
+            }
+        }
     }
     Ok(())
 }
