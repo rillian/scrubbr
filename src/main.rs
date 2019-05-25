@@ -1,5 +1,6 @@
 use std::io;
 use std::path::Path;
+use std::ffi::OsStr;
 
 fn walk(start_path: &Path) -> io::Result<()> {
     for entry in std::fs::read_dir(start_path)? {
@@ -14,7 +15,11 @@ fn walk(start_path: &Path) -> io::Result<()> {
             println!(" dir {:?}", path);
             walk(&path)?;
         } else {
-            println!("file {:?}", path);
+            if path.file_stem() == Some(OsStr::new("SHA256SUMS")) {
+                println!("SHA2 {:?}", path);
+            } else {
+                println!("file {:?}", path);
+            }
         }
     }
     Ok(())
