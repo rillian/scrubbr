@@ -1,6 +1,7 @@
 use std::io;
 use std::path::Path;
 use std::ffi::OsStr;
+use std::io::BufRead;
 
 fn walk(start_path: &Path) -> io::Result<()> {
     for entry in std::fs::read_dir(start_path)? {
@@ -17,10 +18,20 @@ fn walk(start_path: &Path) -> io::Result<()> {
         } else {
             if path.file_stem() == Some(OsStr::new("SHA256SUMS")) {
                 println!("SHA2 {:?}", path);
+                validate(&path)?;
             } else {
                 println!("file {:?}", path);
             }
         }
+    }
+    Ok(())
+}
+
+fn validate(checksum_path: &Path) -> io::Result<()> {
+    let file = std::fs::File::open(checksum_path)?;
+    let file = std::io::BufReader::new(file);
+    for line in file.lines() {
+        println!("  {}", line?);
     }
     Ok(())
 }
